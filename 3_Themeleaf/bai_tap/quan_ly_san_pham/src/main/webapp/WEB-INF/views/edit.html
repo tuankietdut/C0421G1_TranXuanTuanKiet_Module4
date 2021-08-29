@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+<!--    <meta charset="UTF-8">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <title>Title</title>
 </head>
 <body>
 
 <form action="/product/edit" method="post" th:object="${product}">
     <table border="1" style="border-collapse: collapse" >
-        <tr>
-            <td>Id Product</td>
-            <td><input type="number" th:field="*{id}"></td>
-        </tr>
+<!--        <tr>-->
+<!--            <td>Id Product</td>-->
+<!--            <td><input type="number" th:field="*{id}"></td>-->
+<!--        </tr>-->
         <tr>
             <td>Name Product</td>
             <td><input type="text" th:field="*{name}" ></td>
