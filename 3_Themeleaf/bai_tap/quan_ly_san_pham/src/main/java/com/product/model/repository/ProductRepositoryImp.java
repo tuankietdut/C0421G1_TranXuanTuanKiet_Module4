@@ -52,8 +52,8 @@ public class ProductRepositoryImp implements ProductRepository {
     }
 
     @Override
-    public List<Product> findByName(String nameProduct) {
-//        return entityManager.find(Product.class, nameProduct);
-        return null;
+    public List<Product> findByNameAndPrice(String sql) {
+        TypedQuery<Product> typedQuery = (TypedQuery<com.product.model.bean.Product>) entityManager.createNativeQuery(sql);
+        return typedQuery.getResultList();
     }
 }

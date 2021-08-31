@@ -38,8 +38,9 @@ public class ProductServiceImp implements ProductService {
         return productRepository.findById(id);
     }
 
+
     @Override
-    public List<Product> findByName(String nameProduct) {
-        return null;
+    public List<Product> findByNameAndPrice(String sql) {
+        return productRepository.findByNameAndPrice(sql);
     }
 }

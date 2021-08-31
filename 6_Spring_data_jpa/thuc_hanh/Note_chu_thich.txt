@@ -1,0 +1,1 @@
+Em gộp 2 bài thực hành lại 1 nha anh, em có tạo 1 cái query Call SP ở repository

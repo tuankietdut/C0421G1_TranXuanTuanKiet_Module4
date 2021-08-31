@@ -10,5 +10,5 @@ public interface ProductService {
     String saveProduct(Product product);
     String deleteProduct(int id);
     Product findById(int id);
-    List<Product> findByName(String nameProduct);
+    List<Product> findByNameAndPrice (String sql);
 }

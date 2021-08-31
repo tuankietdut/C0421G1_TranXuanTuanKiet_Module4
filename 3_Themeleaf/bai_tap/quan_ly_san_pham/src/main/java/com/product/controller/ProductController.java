@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -34,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editProduct(@PathVariable int id, Model model){
+    public String editProduct(@PathVariable(name = "id") int id, Model model){
         model.addAttribute("product", this.productService.findById(id));
         return "edit";
     }
@@ -54,8 +56,21 @@ public class ProductController {
     }
 
     @PostMapping("/search")
-    public String search(@RequestParam String nameProduct, Model model){
-        model.addAttribute("productList",productService.findByName(nameProduct));
+    public String search(@RequestParam Optional<String> nameProduct,
+                         @RequestParam Optional<Double> priceProductLow,
+                         @RequestParam Optional<Double> priceProductBehind,
+                         Model model){
+        String sql = "select * from product where";
+        if (nameProduct.isPresent()){
+            sql+= "product_name like %" +nameProduct + "%";
+        }
+        if (priceProductLow.isPresent()){
+            sql += "product_price >" + priceProductLow;
+        }
+        if (priceProductBehind.isPresent()){
+            sql += "product_price <" + priceProductBehind;
+        }
+        model.addAttribute("productList",productService.findByNameAndPrice(sql));
         return "home";
     }
 
