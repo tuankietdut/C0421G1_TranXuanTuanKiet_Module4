@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="/blog/list">Back to list Blog</a>
+<h1>Blog</h1>
+<table border="1">
+    <tr>
+        <th>Tiêu đề của Blog</th>
+        <th>Nội dung context</th>
+        <th>Ngày viết Blog</th>
+        <th>Category của Blog</th>
+    </tr>
+    <th:block th:each="blog : ${blogObject}">
+        <tr>
+            <td th:text="${blogObject.headerContext}"></td>
+            <td th:text="${blogObject.context}"></td>
+            <td th:text="${blogObject.dateBlog}"></td>
+            <td th:text="${blogObject.category.nameCategory}"></td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>
