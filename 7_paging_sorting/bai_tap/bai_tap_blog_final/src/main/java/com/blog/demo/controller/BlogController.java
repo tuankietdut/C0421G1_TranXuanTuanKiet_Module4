@@ -7,12 +7,14 @@ import com.blog.demo.model.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -29,14 +31,15 @@ public class BlogController {
     public ModelAndView showCreate(){
         ModelAndView modelAndView = new ModelAndView("create");
         List<Category> categoryList =  categoryService.findAll();
-        modelAndView.addObject("blogObject", new Blog());
         modelAndView.addObject("categoryList", categoryList);
+        modelAndView.addObject("blogObject", new Blog());
         return modelAndView;
     }
 
     @PostMapping("/create")
     public ModelAndView afterCreate(@ModelAttribute Blog blog){
             ModelAndView modelAndView = new ModelAndView("create");
+            blog.setDateBlog(new Date(System.currentTimeMillis()));
             this.blogService.save(blog);
             modelAndView.addObject("message","Success create new Blog");
             modelAndView.addObject("blogObject", new Blog());
@@ -58,10 +61,16 @@ public class BlogController {
         }
     }
 
+//    @PageableDefault (value = 5, sort = "headerContext", direction = Sort.Direction.ASC) Pageable pageable
+
     @GetMapping("/list")
-    public ModelAndView showList(@PageableDefault (value = 2) Pageable pageable){
+    public ModelAndView showList(
+                                 @SortDefault (sort = "headerContext", direction = Sort.Direction.ASC) Sort sort){
         ModelAndView modelAndView = new ModelAndView("list");
-        Page<Blog> blogList = this.blogService.pagingBlog(pageable);
+        List<Category> categoryList =  categoryService.findAll();
+        modelAndView.addObject("categoryList", categoryList);
+        List<Blog> blogList = this.blogService.findAll(sort);
+//        Page<Blog> blogList = this.blogService.pagingBlog(pageable);
         modelAndView.addObject("blogList", blogList);
         return modelAndView;
     }
@@ -110,5 +119,11 @@ public class BlogController {
         return "redirect:/blog/list";
     }
 
-
+    @GetMapping("/search")
+    public ModelAndView searchByNameCategory(@RequestParam(name = "nameCategory") String name){
+        ModelAndView modelAndView = new ModelAndView("search");
+        List<Blog> blogList = this.blogService.findByCategoryName(name);
+        modelAndView.addObject("blogList", blogList);
+        return modelAndView;
+    }
 }

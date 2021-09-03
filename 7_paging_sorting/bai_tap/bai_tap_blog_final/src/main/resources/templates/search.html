@@ -14,12 +14,12 @@
         <th>Ngày viết Blog</th>
         <th>Category của Blog</th>
     </tr>
-    <th:block>
+    <th:block th:each="blog : ${blogList}">
         <tr>
-            <td th:text="${blogObject.headerContext}"></td>
-            <td th:text="${blogObject.context}"></td>
-            <td th:text="${blogObject.dateBlog}"></td>
-            <td th:text="${blogObject.category.nameCategory}"></td>
+            <td th:text="${blog.headerContext}"></td>
+            <td th:text="${blog.context}"></td>
+            <td th:text="${blog.dateBlog}"></td>
+            <td th:text="${blog.category.nameCategory}"></td>
         </tr>
     </th:block>
 </table>

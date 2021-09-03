@@ -10,7 +10,7 @@ public class Blog {
     private int id;
     private String headerContext;
     private String context;
-    private String dateBlog;
+    private Date dateBlog;
 
     @ManyToOne(targetEntity = Category.class)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -43,12 +43,21 @@ public class Blog {
     public void setContext(String context) {
         this.context = context;
     }
+//
+//    public String getDateBlog() {
+//        return dateBlog;
+//    }
+//
+//    public void setDateBlog(String dateBlog) {
+//        this.dateBlog = dateBlog;
+//    }
 
-    public String getDateBlog() {
+
+    public Date getDateBlog() {
         return dateBlog;
     }
 
-    public void setDateBlog(String dateBlog) {
+    public void setDateBlog(Date dateBlog) {
         this.dateBlog = dateBlog;
     }
 

@@ -6,6 +6,7 @@ import com.blog.demo.model.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +41,15 @@ public class BlogServiceImp implements BlogService {
     @Override
     public Page<Blog> pagingBlog(Pageable pageable) {
         return this.blogRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Blog> findByCategoryName(String nameCategory) {
+        return this.blogRepository.findBlogByCategory_NameCategory(nameCategory);
+    }
+
+    @Override
+    public List<Blog> findAll(Sort sort) {
+        return this.blogRepository.findAll(sort);
     }
 }
