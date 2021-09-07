@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--<a th:href="@{/music/create}">Create new Book</a>-->
+<div th:if="${msg}" th:text="${msg}"></div>
+<table border="1px">
+    <tr>
+        <th>Id Book</th>
+        <th>Name Book</th>
+        <th>Quantity of Book</th>
+        <th>Type Book</th>
+        <th colspan="2">Action</th>
+    </tr>
+    <tr th:each="item: ${bookList}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.typeBook}"></td>
+        <td><a th:href="@{/book/borrow/__${item.id}__}" >Borrow Book</a></td>
+        <td><a th:href="@{/book/return/__${item.id}__}" >Return Book</a></td>
+    </tr>
+
+</table>
+</body>
+</html>

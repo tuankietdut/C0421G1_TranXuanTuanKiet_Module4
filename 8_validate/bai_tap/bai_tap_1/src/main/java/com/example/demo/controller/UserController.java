@@ -34,13 +34,18 @@ public class UserController {
             ModelAndView modelAndView = new ModelAndView("index");
             return modelAndView;
         }
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-        this.userService.saveUser(user);
-
-        ModelAndView modelAndView = new ModelAndView("complete");
-        modelAndView.addObject("message","Success");
-        return modelAndView;
+            User user = new User();
+            BeanUtils.copyProperties(userDto, user);
+        try {
+            this.userService.saveUser(user);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            ModelAndView modelAndView = new ModelAndView("errors");
+            return modelAndView;
+        }
+            ModelAndView modelAndView = new ModelAndView("complete");
+            modelAndView.addObject("message","Success");
+            return modelAndView;
+        }
     }
 
-}

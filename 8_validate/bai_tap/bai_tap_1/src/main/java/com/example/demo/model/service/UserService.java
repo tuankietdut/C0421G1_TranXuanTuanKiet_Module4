@@ -4,4 +4,5 @@ import com.example.demo.model.bean.User;
 
 public interface UserService {
     void saveUser(User user);
+    User findByEmail(String email);
 }

@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 import org.springframework.lang.NonNull;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
@@ -25,6 +26,7 @@ public class UserDto {
     private int age;
 
     @Email
+    @Column(unique = true)
     private String email;
 
     public UserDto() {
