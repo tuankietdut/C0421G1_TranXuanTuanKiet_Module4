@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<div class="container" th:object="${productObject}">
+    <div class="row">
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <img th:src="${productObject.image}" class="card-img-top" alt="ảnh của sản phẩm">
+                <div class="card-body">
+                    <h5 class="card-title">Tên sản phẩm <span th:text="${productObject.name}"></span></h5>
+                    <p class="card-text">Giá sản phẩm đang rao bán <span th:text="${productObject.price}"></span></p>
+                    <a th:href="@{/add/__${productObject.id}__}" class="btn btn-primary">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <p>Hiển thị 1 số thông tin của sản phẩm : bla bla bla bla</p>
+            <p th:text="${productObject.description}"></p>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

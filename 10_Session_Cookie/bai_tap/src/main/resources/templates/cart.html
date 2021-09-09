@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<p>
+    <a href="/shop">Shop</a>
+</p>
+
+<table class="table table-striped table-hover" th:object="${cart}">
+    <thead>
+    <tr>
+        <th class="col-3">Giỏ hàng -> <span th:text="${cart.sumProduct()}"></span></th>
+        <th class="col-9">Information of product </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product: ${cart.productMap}">
+        <td>
+            <img th:src="${product.getKey().image}" alt="Ảnh về sản phẩm" height="50px">
+        </td>
+        <td>
+            <div>Tên sản phẩm: <span th:text="${product.getKey().name}"></span></div>
+            <div>Giá sản phẩm: <span th:text="${product.getKey().price}"></span></div>
+            <div>
+                <a th:href="@{/cart/increase/__${product.getKey().id}__}">Bớt sản phẩm</a>
+                <span th:text="${product.getValue()}"></span>
+                <a th:href="@{/cart/decrease/__${product.getKey().id}__}">Thêm sản phẩm</a>
+            </div>
+            <div><a th:href="@{/cart/delete/__${product.getKey().id}__}">Xóa sản phẩm</a></div>
+        </td>
+    </tr>
+    <tr>
+        <td>Tổng tiền của chú là: </td>
+        <td th:text="${cart.totalMoneyCart()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
