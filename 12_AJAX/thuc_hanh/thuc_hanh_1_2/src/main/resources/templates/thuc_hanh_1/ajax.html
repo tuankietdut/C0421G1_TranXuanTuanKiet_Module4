@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="hide">Hide Button</button>
+<button id="show">Hide Button</button>
+<button id="animation">Click to show animation</button>
+<p>If you click this button hide and show</p>
+<div style="background:#98bf21;height:100px;width:100px;position:relative;">ABCxyz</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#hide').click(function () {
+            $('p').hide();
+        });
+        $('#show').click(function () {
+            $('p').show();
+        });
+        $('#animation').click(function () {
+            $('div').animate({
+                left: '100px',
+                height: '+=50px',
+                width: '+=100px'
+            })
+
+        })
+    });
+</script>
+</body>
+</html>
