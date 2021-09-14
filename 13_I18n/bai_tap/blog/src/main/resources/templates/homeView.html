@@ -5,11 +5,6 @@
     <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <style>
-        /*.blog{*/
-        /*    color: ghostwhite;*/
-        /*}*/
-    </style>
 </head>
 <body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -59,37 +54,40 @@
                 }
             })
         });
-        // $('.blog').on('click', '')
-        $('.blog').click(function () {
-            // let number = $(this).val();
-            let number = $(this).data("id");
-            console.log(number)
-
-            // console.log(number);
+        $('#buttonSubmit').click(function () {
+            var idBlog = $(this).data("idBlog");
+            console.log(idBlog);
             $.ajax({
-                url: 'http://localhost:8080/' + number,
+                url: 'http://localhost:8080/' + 1,
                 type: 'get',
                 dateType: 'json',
                 success: function (data) {
+                    console.log(idBlog)
                     console.log(data)
-                    $('#nameBlog').val(data.headerBlog);
-                    $('#contentBlog').val(data.contentBlog);
-                    $('#nameCategory').val(data.category.nameCategory);
+                    $('#nameBlog').value = data.headerBlog;
+                    $('#contentBlog').value = data.contentBlog;
+                    $('#nameCategory').value = data.category.nameCategory;
                 }
             })
+
         })
+
+
     })
 </script>
-<h1>Blog List here</h1>
+<h1 th:text="#{home.heading}">Blog List here</h1>
+<div>
+    Language: <a href="?lang=en">English</a> | <a href="?lang=vi">Việt Nam</a>
+</div>
 <table class="table" th:object="${blogList}">
         <thead>
     <tr>
-        <td>BlogID</td>
-        <td>Header</td>
-        <td>Content
-        <td>Category</td>
-        <td>Show View</td>
-        <td>Delete</td>
+        <td th:text="#{blog.id}">BlogID</td>
+        <td th:text="#{blog.header}">Header</td>
+        <td th:text="#{blog.content}">Content
+        <td th:text="#{blog.category}">Category</td>
+        <td th:text="#{blog.showView}">Show View</td>
+        <td th:text="#{blog.delete}">Delete</td>
     </tr>
         </thead>
         <tbody>
@@ -102,10 +100,8 @@
             <td><a th:href="@{item.id}">Delete</a></td>
             <td>
                 <!-- Button trigger modal -->
-<!--                <input id="buttonSubmit" role="button" th:value="${item.id}"  type="button" class="btn btn-primary" data-bs-toggle="modal"-->
-<!--                        data-bs-target="#exampleModal">-->
-                <button id="buttonSubmit" th:value="${item.id}" th:data-id="${item.id}" type="button" class="btn btn-primary blog" data-bs-toggle="modal"
-                       data-bs-target="#exampleModal">
+                <button id="buttonSubmit" th:data-idBlog="${item.id}"  type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
                     View Detail
                 </button>
             </td>
