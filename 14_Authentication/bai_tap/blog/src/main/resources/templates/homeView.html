@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+<body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchBlog').keyup(function () {
+            let nameBlog = $(this).val();
+            $('.table').empty();
+            $.ajax({
+                url: 'http://localhost:8080/search?nameCategory=' + nameBlog,
+                dateType: "json",
+                type: 'get',
+                success: function (data) {
+                    let tr = [];
+                    for (let i = 0; i < data.length; i++) {
+                        tr.push('<tr>');
+                        tr.push('<td>' + data[i].id + '</td>');
+                        tr.push('<td>' + data[i].headerBlog + '</td>');
+                        tr.push('<td>' + data[i].contentBlog + '</td>');
+                        tr.push('<td>' + data[i].category.nameCategory + '</td>');
+                        tr.push('</tr>');
+                    }
+                    $('.table').append(tr.join(""));
+                }
+            })
+        });
+        let numberPage = 1;
+        $('#moreBLog').click(function () {
+            let tr = [];
+            $.ajax({
+                url: 'http://localhost:8080/nextPage?page=' + numberPage,
+                dateType: "json",
+                type: 'get',
+                success: function (data) {
+                    console.log(data);
+                    numberPage++;
+                    for (let i = 0; i < data.content.length; i++) {
+                        tr.push('<tr>');
+                        tr.push('<td>' + data.content[i].id + '</td>');
+                        tr.push('<td>' + data.content[i].headerBlog + '</td>');
+                        tr.push('<td>' + data.content[i].contentBlog + '</td>');
+                        tr.push('<td>' + data.content[i].category.nameCategory + '</td>');
+                        tr.push('<td><a href=" ' + data.content[i].id + ' ">Delete</a></td>')
+                        tr.push('</tr>');
+                    }
+                    $('.table').append((tr.join("")));
+                }
+            })
+        });
+        $('#buttonSubmit').click(function () {
+            var idBlog = $(this).data("idBlog");
+            console.log(idBlog);
+            $.ajax({
+                url: 'http://localhost:8080/' + 1,
+                type: 'get',
+                dateType: 'json',
+                success: function (data) {
+                    console.log(idBlog)
+                    console.log(data)
+                    $('#nameBlog').value = data.headerBlog;
+                    $('#contentBlog').value = data.contentBlog;
+                    $('#nameCategory').value = data.category.nameCategory;
+                }
+            })
+
+        })
+
+
+    })
+</script>
+<h1 th:text="#{home.heading}">Blog List here</h1>
+<div>
+    Language: <a href="?lang=en">English</a> | <a href="?lang=vi">Việt Nam</a>
+</div>
+<table class="table" th:object="${blogList}">
+        <thead>
+    <tr>
+        <td th:text="#{blog.id}">BlogID</td>
+        <td th:text="#{blog.header}">Header</td>
+        <td th:text="#{blog.content}">Content
+        <td th:text="#{blog.category}">Category</td>
+        <td th:text="#{blog.showView}">Show View</td>
+        <td th:text="#{blog.delete}">Delete</td>
+    </tr>
+        </thead>
+        <tbody>
+    <th:block th:each="item: ${blogList}">
+        <tr>
+            <td id="idBlog" th:text="${item.id}"></td>
+            <td th:text="${item.headerBlog}"></td>
+            <td th:text="${item.contentBlog}"></td>
+            <td th:text="${item.category.nameCategory}"></td>
+            <td><a th:href="@{item.id}">Delete</a></td>
+            <td>
+                <!-- Button trigger modal -->
+                <button id="buttonSubmit" th:data-idBlog="${item.id}"  type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                    View Detail
+                </button>
+            </td>
+        </tr>
+    </th:block>
+        </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Blog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="nameBlog"> <br>
+                <input type="text" id="contentBlog"><br>
+                <input type="text" id="nameCategory"><br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <input type="text" id="searchBlog" autocomplete="off" placeholder="InputNameCateGory">
+</div>
+<button id="moreBLog">More Blog</button>
+<!--<div>-->
+<!--    <div th:if="${blogList.hasPrevious()}"><a th:href="@{/nextPage/(page=${blogList.number} - 1)}">NextPage</a></div>-->
+<!--    <div th:if="${blogList.hasNext()}"><a th:href="@{/nextPage/(page=${blogList.number} + 1)}">NextPage</a></div>-->
+<!--</div>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
