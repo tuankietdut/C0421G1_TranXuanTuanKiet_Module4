@@ -37,8 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 neu truy cap truc tiep /login thi login thanh cong se chuyen huong ve /student */
                 .defaultSuccessUrl("/home").permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/manage").hasRole("editor")
-                .antMatchers("/view").hasAnyRole("user","editor")
+                .authorizeRequests().antMatchers("/home").permitAll()
+               .antMatchers("/manage").hasRole("")
+                .antMatchers("/view").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()

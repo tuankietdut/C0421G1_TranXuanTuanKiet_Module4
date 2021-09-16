@@ -44,4 +44,10 @@ public class BlogController {
         return new ModelAndView("403");
     }
 
+//    @PostMapping("/test")
+//    public ModelAndView showView(@RequestParam(name = "testname",required = false) String name, @RequestParam(name = "testage" ,required = false) String age){
+//        System.out.println(name);
+//        System.out.println(age);
+//        return new ModelAndView("403");
+//    }
 }
