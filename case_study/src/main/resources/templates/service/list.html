@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Service</title>
+    <link rel="stylesheet" href="/bootstrap5.1/css/bootstrap.min.css">
+    <style>
+        .errors{
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // $('#mySong').get(0).play()
+        $('#icon').click(function () {
+            $('#mySong').get(0).pause()
+        })
+
+        $('#typeService').change(function () {
+            if ($(this).val()=== '1'){
+                $('#poolArea').show();
+                $('#standardRoom').show();
+                $('#description').show();
+                $('#numberFloor').show();
+            }
+            if ($(this).val() === '2'){
+                $('#standardRoom').show();
+                $('#description').show();
+                $('#numberFloor').show();
+                $('#poolArea').hide()
+            }
+            if ($(this).val() === '3'){
+                $('#poolArea').hide();
+                $('#standardRoom').hide();
+                $('#description').hide();
+                $('#numberFloor').hide();
+            }
+        })
+        $('.edit').click(function () {
+            $('.errors').text('')
+            $.ajax({
+                url: 'http://localhost:8080/service/' + $(this).data('id'),
+                type: 'get',
+                dataType : 'json',
+                success: function (data) {
+                    $('#idService').val(data.serviceId)
+                    $('#nameService').val(data.serviceName);
+                    $('#areaService').val(data.serviceArea);
+                    $('#costService').val(data.serviceCost);
+                    $('#maxPeopleService').val(data.serviceMaxPeople);
+                    $('#standardRoom').val(data.standardRoom);
+                    $('#description').val(data.descriptionOtherConvenience);
+                    $('#poolArea').val(data.poolArea);
+                    $('#numberFloor').val(data.numberOfFloors);
+                    $('#typeService').val(data.serviceType.serviceTypeId);
+                }
+            })
+        })
+        if ($('#errorsJquery').val() === 'true') {
+            $('#exampleModal').modal('show');
+        }
+        $('#createButton').click(function () {
+            $('#idService').val('0')
+            $('#nameService').val('');
+            $('#areaService').val('');
+            $('#costService').val('');
+            $('#maxPeopleService').val('');
+            $('#standardRoom').val('');
+            $('#description').val('');
+            $('#poolArea').val('');
+            $('#numberFloor').val('');
+            $('#typeService').val('1');
+        })
+    })
+
+</script>
+<header th:replace="~{/layout/header::header}"></header>
+<div class="container-fluid"
+     style="min-height: 90vh; background: linear-gradient(0deg, rgba(207,219,219,0.964438191960367) 42%, rgba(215,184,184,0.9475842593760972) 100%); ">
+    <div class="row">
+        <div class="col-lg-3">
+
+
+        </div>
+        <div class="col-lg-9 p-0" style="overflow-x: scroll">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary justify-content-center" style="position: center" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" id="createButton">
+                Create new Service
+            </button>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name Service</th>
+                    <th>Area</th>
+                    <th>Cost</th>
+                    <th>MaxPeople</th>
+                    <th>standardRoom</th>
+                    <th>Description Convenience</th>
+                    <th>Pool Area</th>
+                    <th>Number of Floors</th>
+                    <th>Service Type</th>
+                    <th colspan="2">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${serviceList}">
+                    <th th:text="${item.serviceId}"></th>
+                    <td th:text="${item.serviceName}"></td>
+                    <td th:text="${item.serviceArea}"></td>
+                    <td th:text="${item.serviceCost}"></td>
+                    <td th:text="${item.serviceMaxPeople}"></td>
+                    <td th:text="${item.standardRoom}"></td>
+                    <td th:text="${item.descriptionOtherConvenience}"></td>
+                    <td th:text="${item.poolArea}">
+                    <td th:text="${item.numberOfFloors}"></td>
+                    <td th:text="${item.serviceType.serviceTypeName}"></td>
+                    <td>
+                        <button class="btn btn-warning edit" th:data-id="${item.serviceId}" data-bs-target="#modalService" data-bs-toggle="modal">Edit</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" th:href="@{/service/(page = ${serviceList.number} -1)}" th:if="${serviceList.hasPrevious()}">Previous</a></li>
+                    <li class="page-item"><span class="page-link" th:text="${serviceList.number+1}"></span></li>
+                    <li class="page-item"><a class="page-link" th:href="@{/service/(page= ${serviceList.number} +1)}" th:if="${serviceList.hasNext()}">Next</a></li>
+                </ul>
+            </nav>
+            <div th:if="${msg}" th:text="${msg}" style="background: greenyellow"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalService" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/service" method="post" th:object="${service}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" th:if="${#fields.hasAnyErrors()}" id="errorsJquery" value="true">
+                    <input type="hidden" th:field="*{serviceId}" id="idService">
+                    <div class="mb-3">
+                        <label for="typeService" class="form-label">Type of Service</label>
+                        <select th:field="*{serviceType}" class="form-control" id="typeService">
+                            <option th:value="0" th:selected="true">Select Type Service</option>
+                            <option th:each="item : ${serviceTypeList}" th:text="${item.serviceTypeName}"
+                                    th:value="${item.serviceTypeId}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nameService" class="form-label">Name Service</label>
+                        <input type="text" class="form-control" th:field="*{serviceName}" id="nameService">
+                        <p th:if="${#fields.hasErrors('serviceName')}" th:errors="*{serviceName}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="areaService" class="form-label">Area Service</label>
+                        <input type="number" class="form-control" th:field="*{serviceArea}" id="areaService">
+                        <p th:if="${#fields.hasErrors('serviceArea')}" th:errors="*{serviceArea}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="costService" class="form-label">Cost Service</label>
+                        <input type="number" class="form-control" th:field="*{serviceCost}" id="costService">
+                        <p th:if="${#fields.hasErrors('serviceCost')}" th:errors="*{serviceCost}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="maxPeopleService" class="form-label">Max People</label>
+                        <input type="number" class="form-control" th:field="*{serviceMaxPeople}" id="maxPeopleService">
+                        <p th:if="${#fields.hasErrors('serviceMaxPeople')}" th:errors="*{serviceMaxPeople}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="standardRoom" class="form-label">StandRoom</label>
+                        <input type="text" class="form-control" th:field="*{standardRoom}" id="standardRoom">
+                        <p th:if="${#fields.hasErrors('standardRoom')}" th:errors="*{standardRoom}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description Convenience</label>
+                        <input type="text" class="form-control" th:field="*{descriptionOtherConvenience}" id="description">
+                        <p th:if="${#fields.hasErrors('descriptionOtherConvenience')}" th:errors="*{descriptionOtherConvenience}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="poolArea" class="form-label">Pool Area</label>
+                        <input type="number" class="form-control" th:field="*{poolArea}" id="poolArea">
+                        <p th:if="${#fields.hasErrors('poolArea')}" th:errors="*{poolArea}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="numberFloor" class="form-label">Number of Floors</label>
+                        <input type="number" class="form-control" th:field="*{numberOfFloors}" id="numberFloor">
+                        <p th:if="${#fields.hasErrors('numberOfFloors')}" th:errors="*{numberOfFloors}" class="errors"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{/layout/footer:: footer}"></footer>
+<script src="/bootstrap5.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+    <header th:fragment="header">
+        <div class="container-fluid bg-light">
+<!--            <div class="row ">-->
+<!--                <div class="col-lg-3 px-0">-->
+<!--                    <a href="#">-->
+<!--                        <img src="/img/tutor-3.jpg" width="110" alt="This is Linh">-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--                <div class="col-lg-9 px-0">-->
+<!--                    <h5 class="text-end fst-italic pt-4 pe-4">Tran Xuan Tuan Kiet</h5>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="row ">
+                <div class="col-12 px-0 ">
+                    <nav class="navbar navbar-expand-lg navbar-light "  style="background-color: #ff531a; color: white"  >
+                        <div class="container-fluid">
+<!--                            <a class="navbar-brand" href="#">Navbar</a>-->
+<!--                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--                                <span class="navbar-toggler-icon"></span>-->
+<!--                            </button>-->
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                                    <li class="nav-item offset-lg-2">
+                                        <a class="nav-link active" href="/">Home</a>
+                                    </li>
+                                    <li class="nav-item offset-lg-2">
+                                        <a class="nav-link" href="/employee">Employee</a>
+                                    </li>
+                                    <li class="nav-item offset-lg-2">
+                                        <a class="nav-link" href="/customer">Customer</a>
+<!--                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                                            Dropdown-->
+<!--                                        </a>-->
+<!--                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                                            <li><a class="dropdown-item" href="#">Action</a></li>-->
+<!--                                            <li><a class="dropdown-item" href="#">Another action</a></li>-->
+<!--                                            <li><hr class="dropdown-divider"></li>-->
+<!--                                            <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+<!--                                        </ul>-->
+                                    </li>
+                                    <li class="nav-item offset-lg-2">
+                                        <a class="nav-link" href="/service">Service</a>
+                                    </li>
+                                    <li class="nav-item offset-lg-2">
+                                        <a class="nav-link" href="/contract">Contract</a>
+                                    </li>
+                                </ul>
+                                <form class="d-flex">
+                                    <input class="form-control me-2" type="search" placeholder="Search Furama" aria-label="Search">
+                                    <button class="btn btn-light" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+</body>
+</html>

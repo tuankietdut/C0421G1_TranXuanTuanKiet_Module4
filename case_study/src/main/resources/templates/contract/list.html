@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contract</title>
+    <link rel="stylesheet" href="/bootstrap5.1/css/bootstrap.min.css">
+    <style>
+        .errors{
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // $('#mySong').get(0).play()
+        $('#icon').click(function () {
+            $('#mySong').get(0).pause()
+        })
+        // $('.edit').click(function () {
+        //     $.ajax({
+        //         url: 'http://localhost:8080/service/' + $(this).data('id'),
+        //         type: 'get',
+        //         dataType : 'json',
+        //         success: function (data) {
+        //             $('#idService').val(data.serviceId)
+        //             $('#nameService').val(data.serviceName);
+        //             $('#areaService').val(data.serviceArea);
+        //             $('#costService').val(data.serviceCost);
+        //             $('#maxPeopleService').val(data.serviceMaxPeople);
+        //             $('#standardRoom').val(data.standardRoom);
+        //             $('#description').val(data.descriptionOtherConvenience);
+        //             $('#poolArea').val(data.poolArea);
+        //             $('#numberFloor').val(data.numberOfFloors);
+        //             $('#typeService').val(data.serviceType.serviceTypeId);
+        //         }
+        //     })
+        // })
+        if ($('#errorsJquery').val() === 'true') {
+            $('#modalContract').modal('show');
+        }
+        if ($('#errorsJqueryAttachService').val() === 'true') {
+            $('#modalAttachService').modal('show');
+        }
+    })
+
+</script>
+<header th:replace="~{/layout/header::header}"></header>
+<div class="container-fluid"
+     style="min-height: 90vh; background: linear-gradient(0deg, rgba(207,219,219,0.964438191960367) 42%, rgba(215,184,184,0.9475842593760972) 100%); ">
+    <div class="row">
+        <div class="col-lg-3">
+
+
+        </div>
+        <div class="col-lg-9 p-0" style="overflow-x: scroll">
+            <!-- Button  create contract -->
+            <button type="button" class="btn btn-primary justify-content-center" style="position: center" data-bs-toggle="modal"
+                    data-bs-target="#modalContract" id="createContractButton">
+                Create new Contract
+            </button>
+            <!-- Button  create attach Service -->
+            <button type="button" class="btn btn-primary justify-content-center" style="position: center" data-bs-toggle="modal"
+                    data-bs-target="#modalAttachService" id="createAttachServiceButton">
+                Create new Attach Service
+            </button>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Date Start</th>
+                    <th>Date End</th>
+                    <th>Deposit</th>
+                    <th>Total Money</th>
+                    <th>Customer</th>
+                    <th>Employee</th>
+                    <th>Service</th>
+                    <th>Attach Service</th>
+                    <th>Cost AttachService</th>
+                    <th>Quantity AttachService</th>
+<!--                    <th>Action</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${contractList}">
+                    <th th:text="${item.contractId}"></th>
+                    <td th:text="${item.contractStartDate}"></td>
+                    <td th:text="${item.contractEndDate}"></td>
+                    <td th:text="${item.contractDeposit}"></td>
+                    <td th:text="${item.contractTotalMoney}"></td>
+                    <td th:text="${item.customer.customerName}"></td>
+                    <td th:text="${item.employee.employeeName}"></td>
+                    <td th:text="${item.service.serviceName}"></td>
+<!--                    <td th:text="${item.contractDetail}"></td>-->
+                    <td>
+                        <th:block th:each="detail : ${item.contractDetail}">
+                            <span th:text="${detail.attachService.attachServiceName}"></span> <br>
+                        </th:block>
+                    </td>
+                    <td>
+                        <th:block th:each="detail : ${item.contractDetail}">
+                            <span th:text="${detail.attachService.attachServiceCost}"></span> <br>
+                        </th:block>
+                    </td>
+                    <td>
+                        <th:block th:each="detail : ${item.contractDetail}">
+                            <span th:text="${detail.quantity}"></span> <br>
+                        </th:block>
+                    </td>
+<!--                    <td>-->
+<!--                        <button class="btn btn-warning edit" th:data-id="${item.service.serviceId}" data-bs-target="#modalService" data-bs-toggle="modal">Edit</button>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <button class="btn btn-warning edit" th:data-id="${item.contractId}" data-bs-target="#exampleModal" data-bs-toggle="modal">Edit</button>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <button class="btn btn-danger">Delete</button>-->
+<!--                    </td>-->
+                </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" th:href="@{/contract/(page = ${contractList.number} -1)}" th:if="${contractList.hasPrevious()}">Previous</a></li>
+                    <li class="page-item"><span class="page-link" th:text="${contractList.number+1}"></span></li>
+                    <li class="page-item"><a class="page-link" th:href="@{/contract/(page= ${contractList.number} +1)}" th:if="${contractList.hasNext()}">Next</a></li>
+                </ul>
+            </nav>
+            <div th:if="${msg}" th:text="${msg}" style="background: greenyellow"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Contract-->
+<div class="modal fade" id="modalContract" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/contract" method="post" th:object="${contract}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create new Contract</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" th:if="${#fields.hasAnyErrors()}" id="errorsJquery" value="true">
+<!--                    <input type="hidden" th:field="*{contractId}" id="idService">-->
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">Date Start Contract</label>
+                        <input type="date" class="form-control" th:field="*{contractStartDate}" id="startDate">
+                        <p th:if="${#fields.hasErrors('contractStartDate')}" th:errors="*{contractStartDate}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">Date End Contract</label>
+                        <input type="date" class="form-control" th:field="*{contractEndDate}" id="endDate">
+                        <p th:if="${#fields.hasErrors('contractEndDate')}" th:errors="*{contractEndDate}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deposit" class="form-label">Deposit</label>
+                        <input type="number" class="form-control" th:field="*{contractDeposit}" id="deposit">
+                        <p th:if="${#fields.hasErrors('contractDeposit')}" th:errors="*{contractDeposit}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="totalMoney" class="form-label">Total Money</label>
+                        <input type="number" class="form-control" th:field="*{contractTotalMoney}" id="totalMoney">
+                        <p th:if="${#fields.hasErrors('contractTotalMoney')}" th:errors="*{contractTotalMoney}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="employeeId" class="form-label">Employee</label>
+                        <select th:field="*{employee}" class="form-control" id="employeeId" >
+                            <option value=""  disabled selected>Select Employee</option>
+                            <option th:each="item : ${employeeList}" th:text="${item.employeeName}"
+                                    th:value="${item.employeeId}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customerId" class="form-label">Customer</label>
+                        <select th:field="*{customer}" class="form-control" id="customerId">
+                            <option th:each="item : ${customerList}" th:text="${item.customerName}"
+                                    th:value="${item.customerId}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceId" class="form-label">Service</label>
+                        <select th:field="*{service}" class="form-control" id="serviceId">
+                            <option th:each="item : ${serviceList}" th:text="${item.serviceName}"
+                                    th:value="${item.serviceId}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Modal Attach Service-->
+<div class="modal fade" id="modalAttachService" tabindex="-1" aria-labelledby="headerAttachService" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/contract/attachService" method="post" th:object="${attachService}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="headerAttachService">Create new Attach Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" th:if="${#fields.hasAnyErrors()}" id="errorsJqueryAttachService" value="true">
+                    <!--                    <input type="hidden" th:field="*{contractId}" id="idService">-->
+                    <div class="mb-3">
+                        <label for="nameAttachService" class="form-label">Name Attach Service</label>
+                        <input type="text" class="form-control" th:field="*{attachServiceName}" id="nameAttachService">
+                        <p th:if="${#fields.hasErrors('attachServiceName')}" th:errors="*{attachServiceName}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="costAttachService" class="form-label">Cost Attach Service</label>
+                        <input type="number" class="form-control" th:field="*{attachServiceCost}" id="costAttachService">
+                        <p th:if="${#fields.hasErrors('attachServiceCost')}" th:errors="*{attachServiceCost}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="unitAttachService" class="form-label">Unit</label>
+                        <input type="number" class="form-control" th:field="*{attachServiceUnit}" id="unitAttachService">
+                        <p th:if="${#fields.hasErrors('attachServiceUnit')}" th:errors="*{attachServiceUnit}" class="errors"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="statusAttachService" class="form-label">Status</label>
+                        <input type="text" class="form-control" th:field="*{attachServiceStatus}" id="statusAttachService">
+                        <p th:if="${#fields.hasErrors('attachServiceStatus')}" th:errors="*{attachServiceStatus}" class="errors"></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<footer th:replace="~{/layout/footer:: footer}"></footer>
+<script src="/bootstrap5.1/js/bootstrap.min.js"></script>
+</body>
+</html>

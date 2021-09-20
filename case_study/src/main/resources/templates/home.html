@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/bootstrap5.1/css/bootstrap.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{/layout/header::header}"></div>
+<div class="container-fluid" style="min-height: 90vh; background-image: url('/img/MAN.jpg'); background-size: cover; background-repeat: no-repeat">
+</div>
+
+<footer th:replace="~{/layout/footer:: footer}"></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#mySong').get(0).play();
+        $('#icon').click(function () {
+                $('#mySong').get(0).pause()
+        })
+    })
+</script>
+<script src="/bootstrap5.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
